@@ -22,6 +22,15 @@ export function ConditionNotes({ patient, onUpdatePatient }: ConditionNotesProps
   const { toast } = useToast();
 
   const handleGetSummary = async () => {
+    if (typeof window !== 'undefined' && !navigator.onLine) {
+      toast({
+        title: 'You are offline',
+        description: 'AI summarization requires an internet connection.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (!newNote.trim()) {
       toast({
         title: 'Empty Note',
