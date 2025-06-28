@@ -1,3 +1,7 @@
+import DentalTrackApp from "@/components/DentalTrackApp";
+
 export default function Home() {
-  return <></>;
+  return (
+    <DentalTrackApp />
+  );
 }
