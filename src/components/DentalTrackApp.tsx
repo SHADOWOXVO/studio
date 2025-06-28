@@ -103,7 +103,7 @@ export default function DentalTrackApp() {
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <main className="flex-1 flex gap-6 p-6 overflow-hidden">
+      <main className="flex-1 flex flex-col md:flex-row gap-6 p-6 overflow-y-auto md:overflow-y-hidden">
         <PatientList
           patients={patients}
           selectedPatientId={selectedPatientId}

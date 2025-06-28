@@ -19,7 +19,7 @@ export function PatientList({
   onAddPatient,
 }: PatientListProps) {
   return (
-    <Card className="w-full max-w-xs">
+    <Card className="w-full md:max-w-xs flex-shrink-0">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="flex items-center gap-2"><Users /> Patients</span>

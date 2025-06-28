@@ -28,13 +28,13 @@ import type { Patient } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 
 const patientFormSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  age: z.coerce.number().int().positive({ message: 'Age must be a positive number.' }),
-  chiefComplaint: z.string().min(5, { message: 'Chief complaint is required.' }),
-  dentalHistory: z.string().min(10, { message: 'Dental history must be at least 10 characters.' }),
-  medicalHistory: z.string().min(10, { message: 'Medical history must be at least 10 characters.' }),
-  treatmentPlans: z.string().min(10, { message: 'Treatment plans must be at least 10 characters.' }),
-  totalTreatmentCost: z.coerce.number().positive({ message: 'Cost must be a positive number.' }),
+  name: z.string(),
+  age: z.coerce.number(),
+  chiefComplaint: z.string(),
+  dentalHistory: z.string(),
+  medicalHistory: z.string(),
+  treatmentPlans: z.string(),
+  totalTreatmentCost: z.coerce.number(),
 });
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
