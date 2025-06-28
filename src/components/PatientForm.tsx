@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -62,6 +63,23 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
         },
   });
 
+  React.useEffect(() => {
+    if (open) {
+      form.reset(
+        patient ?? {
+          name: '',
+          age: 0,
+          chiefComplaint: '',
+          dentalHistory: '',
+          medicalHistory: '',
+          treatmentPlans: '',
+          totalTreatmentCost: 0,
+        }
+      );
+    }
+  }, [patient, open, form]);
+
+
   const onSubmit = (data: PatientFormValues) => {
     const newPatientData: Patient = {
       ...(patient || { id: crypto.randomUUID(), payments: [], notes: [] }),
@@ -77,7 +95,7 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{patient ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
           <DialogDescription>
