@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import type { Patient } from '@/types';
 import { Header } from '@/components/layout/Header';
 import { PatientList } from '@/components/PatientList';
 import { PatientProfile } from '@/components/PatientProfile';
 import { PatientForm } from '@/components/PatientForm';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const initialPatients: Patient[] = [
     {
@@ -58,9 +59,17 @@ const initialPatients: Patient[] = [
 
 export default function DentalTrackApp() {
   const [patients, setPatients] = useLocalStorage<Patient[]>('dental-track-patients', initialPatients);
-  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(patients.length > 0 ? patients[0].id : null);
+  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    if (patients.length > 0 && !selectedPatientId) {
+      setSelectedPatientId(patients[0].id);
+    }
+  }, [patients, selectedPatientId]);
 
   const selectedPatient = patients.find((p) => p.id === selectedPatientId) ?? null;
 
@@ -98,6 +107,25 @@ export default function DentalTrackApp() {
 
   const handleUpdatePatient = (updatedPatientData: Patient) => {
     handleSavePatient(updatedPatientData);
+  }
+
+  if (!isClient) {
+    return (
+      <div className="flex flex-col h-screen">
+        <Header />
+        <main className="flex-1 flex flex-col md:flex-row gap-6 p-6 overflow-hidden">
+          <div className="w-full md:max-w-xs flex-shrink-0 space-y-4">
+             <Skeleton className="h-10 w-full" />
+             <Skeleton className="h-8 w-full" />
+             <Skeleton className="h-8 w-full" />
+             <Skeleton className="h-8 w-full" />
+          </div>
+          <div className="flex-1 overflow-y-auto">
+             <Skeleton className="h-full w-full" />
+          </div>
+        </main>
+      </div>
+    );
   }
 
   return (
