@@ -7,45 +7,31 @@ const withPWA = withPWAInit({
     register: true,
     skipWaiting: true,
     runtimeCaching: [
-        // Cache Google Fonts
         {
-          urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "google-fonts",
-            expiration: {
-              maxEntries: 4,
-              maxAgeSeconds: 365 * 24 * 60 * 60, // 365 days
+            // This is the key change. We use a "Cache First" strategy for our own app's files.
+            // This means once the app is loaded, it will always be served from the cache when offline,
+            // preventing the "You are offline" page from appearing immediately.
+            urlPattern: ({ url }) => url.origin === self.location.origin,
+            handler: "CacheFirst",
+            options: {
+                cacheName: "app-assets",
+                expiration: {
+                    maxEntries: 100,
+                    maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+                },
             },
-          },
         },
-        // Cache images
         {
-          urlPattern: /\.(?:png|gif|jpg|jpeg|svg|webp)$/,
-          handler: "CacheFirst",
-          options: {
-            cacheName: "images",
-            expiration: {
-              maxEntries: 60,
-              maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            // This rule is for external fonts, which should also be cached.
+            urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
+            handler: "CacheFirst",
+            options: {
+                cacheName: "google-fonts",
+                expiration: {
+                    maxEntries: 10,
+                    maxAgeSeconds: 365 * 24 * 60 * 60, // 1 Year
+                },
             },
-          },
-        },
-        // Cache all other pages and assets
-        {
-          urlPattern: ({ url }) => url.origin === self.location.origin,
-          handler: "NetworkFirst",
-          options: {
-            cacheName: "pages-and-assets",
-            networkTimeoutSeconds: 10,
-            expiration: {
-              maxEntries: 60,
-              maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
         },
     ]
 });
