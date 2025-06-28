@@ -29,9 +29,10 @@ import { useToast } from '@/hooks/use-toast';
 const patientFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   age: z.coerce.number().int().positive({ message: 'Age must be a positive number.' }),
-  problem: z.string().min(5, { message: 'Problem description is required.' }),
+  chiefComplaint: z.string().min(5, { message: 'Chief complaint is required.' }),
   dentalHistory: z.string().min(10, { message: 'Dental history must be at least 10 characters.' }),
-  possibleSolutions: z.string().min(10, { message: 'Possible solutions must be at least 10 characters.' }),
+  medicalHistory: z.string().min(10, { message: 'Medical history must be at least 10 characters.' }),
+  treatmentPlans: z.string().min(10, { message: 'Treatment plans must be at least 10 characters.' }),
   totalTreatmentCost: z.coerce.number().positive({ message: 'Cost must be a positive number.' }),
 });
 
@@ -53,9 +54,10 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
       : {
           name: '',
           age: 0,
-          problem: '',
+          chiefComplaint: '',
           dentalHistory: '',
-          possibleSolutions: '',
+          medicalHistory: '',
+          treatmentPlans: '',
           totalTreatmentCost: 0,
         },
   });
@@ -112,10 +114,10 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
             />
             <FormField
               control={form.control}
-              name="problem"
+              name="chiefComplaint"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>The Problem</FormLabel>
+                  <FormLabel>Chief Complaint</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. Sharp pain in upper molar" {...field} />
                   </FormControl>
@@ -130,7 +132,7 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
                 <FormItem>
                   <FormLabel>Dental History</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Previous fillings, crowns, allergies..." {...field} />
+                    <Textarea placeholder="e.g., Previous fillings, crowns..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,10 +140,23 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
             />
             <FormField
               control={form.control}
-              name="possibleSolutions"
+              name="medicalHistory"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Possible Solutions</FormLabel>
+                  <FormLabel>Medical History</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Allergies, current medications..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="treatmentPlans"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Treatment Plans</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Root canal treatment, filling replacement..." {...field} />
                   </FormControl>

@@ -15,9 +15,10 @@ export interface Patient {
   id:string;
   name: string;
   age: number;
-  problem: string;
+  chiefComplaint: string;
   dentalHistory: string;
-  possibleSolutions: string;
+  medicalHistory: string;
+  treatmentPlans: string;
   totalTreatmentCost: number;
   payments: Payment[];
   notes: Note[];

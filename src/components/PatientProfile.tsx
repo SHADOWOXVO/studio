@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { AlertCircle, Calendar, FilePenLine, Info, Lightbulb, Smile, Stethoscope, Trash2 } from 'lucide-react';
+import { AlertCircle, Calendar, ClipboardList, FilePenLine, HeartPulse, Info, Smile, Stethoscope, Trash2 } from 'lucide-react';
 import type { Patient } from '@/types';
 import { ConditionNotes } from './ConditionNotes';
 import { PaymentTracker } from './PaymentTracker';
@@ -58,7 +58,7 @@ export function PatientProfile({ patient, onEdit, onDelete, onUpdatePatient }: P
           <CardTitle className="text-3xl font-headline">{patient.name}</CardTitle>
           <CardDescription className="flex items-center gap-4 mt-2">
             <span className="flex items-center gap-2"><Calendar size={14} /> {patient.age} years old</span>
-            <span className="flex items-center gap-2"><AlertCircle size={14} /> {patient.problem}</span>
+            <span className="flex items-center gap-2"><AlertCircle size={14} /> {patient.chiefComplaint}</span>
           </CardDescription>
         </div>
         <div className="flex gap-2">
@@ -100,10 +100,18 @@ export function PatientProfile({ patient, onEdit, onDelete, onUpdatePatient }: P
              </Card>
              <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><Lightbulb size={20} /> Possible Solutions</CardTitle>
+                    <CardTitle className="flex items-center gap-2"><HeartPulse size={20} /> Medical History</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{patient.possibleSolutions}</p>
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{patient.medicalHistory}</p>
+                </CardContent>
+             </Card>
+             <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><ClipboardList size={20} /> Treatment Plans</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{patient.treatmentPlans}</p>
                 </CardContent>
              </Card>
              <Card>
