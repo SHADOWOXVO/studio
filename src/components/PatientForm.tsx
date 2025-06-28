@@ -50,32 +50,32 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
   const { toast } = useToast();
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientFormSchema),
-    defaultValues: patient
-      ? { ...patient }
-      : {
-          name: '',
-          age: 0,
-          chiefComplaint: '',
-          dentalHistory: '',
-          medicalHistory: '',
-          treatmentPlans: '',
-          totalTreatmentCost: 0,
-        },
+    // Initialize with stable, empty defaults to prevent uncontrolled input errors.
+    defaultValues: {
+      name: '',
+      age: 0,
+      chiefComplaint: '',
+      dentalHistory: '',
+      medicalHistory: '',
+      treatmentPlans: '',
+      totalTreatmentCost: 0,
+    },
   });
 
   React.useEffect(() => {
     if (open) {
-      form.reset(
-        patient ?? {
-          name: '',
-          age: 0,
-          chiefComplaint: '',
-          dentalHistory: '',
-          medicalHistory: '',
-          treatmentPlans: '',
-          totalTreatmentCost: 0,
-        }
-      );
+      // When the form opens, reset it with the current patient's data,
+      // providing fallbacks for any potentially null or undefined values.
+      const formValues = {
+        name: patient?.name || '',
+        age: patient?.age || 0,
+        chiefComplaint: patient?.chiefComplaint || '',
+        dentalHistory: patient?.dentalHistory || '',
+        medicalHistory: patient?.medicalHistory || '',
+        treatmentPlans: patient?.treatmentPlans || '',
+        totalTreatmentCost: patient?.totalTreatmentCost || 0,
+      };
+      form.reset(formValues);
     }
   }, [patient, open, form]);
 
