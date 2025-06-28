@@ -18,17 +18,17 @@ const initialPatients: Patient[] = [
       medicalHistory: 'No known medical conditions. Not taking any medication.',
       treatmentPlans: 'X-ray results confirm a small cavity on tooth #3. Scheduled a filling for the next appointment.',
       totalTreatmentCost: 1200,
-      payments: [{ id: 'p1', amount: 500, date: new Date(Date.now() - 20 * 86400000).toISOString() }],
+      payments: [{ id: 'p1', amount: 500, date: '2024-05-10T10:00:00.000Z' }],
       notes: [
         {
           id: 'n1',
-          date: new Date(Date.now() - 20 * 86400000).toISOString(),
+          date: '2024-05-10T10:00:00.000Z',
           content: 'Patient reported sensitivity in the upper right quadrant. Examination revealed a potential cavity on tooth #3. X-rays ordered.',
           summary: 'Patient has sensitivity in the upper right; a possible cavity on tooth #3 was found, and X-rays were ordered.'
         },
         {
           id: 'n2',
-          date: new Date(Date.now() - 10 * 86400000).toISOString(),
+          date: '2024-05-20T11:00:00.000Z',
           content: 'X-ray results confirm a small cavity on tooth #3. Scheduled a filling for the next appointment. Provided patient with oral hygiene instructions.',
           summary: 'X-ray confirms a cavity on tooth #3. A filling is scheduled, and oral hygiene instructions were given.'
         }
@@ -43,11 +43,11 @@ const initialPatients: Patient[] = [
         medicalHistory: 'Allergic to penicillin.',
         treatmentPlans: 'Routine cleaning and check-up. No issues found. Recommend to continue current routine.',
         totalTreatmentCost: 350,
-        payments: [{ id: 'p2', amount: 350, date: new Date(Date.now() - 5 * 86400000).toISOString() }],
+        payments: [{ id: 'p2', amount: 350, date: '2024-05-25T14:00:00.000Z' }],
         notes: [
             {
                 id: 'n3',
-                date: new Date(Date.now() - 5 * 86400000).toISOString(),
+                date: '2024-05-25T14:00:00.000Z',
                 content: 'Routine cleaning and check-up. No issues found. Patient has excellent oral hygiene. Recommended to continue current routine. Next check-up in 6 months.',
                 summary: 'The patient underwent a routine cleaning and check-up with no issues. They have excellent oral hygiene and were advised to continue their current routine, with a follow-up in 6 months.'
             }
