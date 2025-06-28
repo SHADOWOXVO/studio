@@ -6,9 +6,6 @@ const withPWA = withPWAInit({
     disable: process.env.NODE_ENV === "development",
     register: true,
     skipWaiting: true,
-    fallbacks: {
-        document: "/_offline",
-    }
 });
 
 
