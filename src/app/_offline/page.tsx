@@ -9,9 +9,9 @@ export default function OfflinePage() {
             <WifiOff className="h-4 w-4" />
             <AlertTitle>You are offline</AlertTitle>
             <AlertDescription>
-                It looks like you've lost your internet connection. Some features may
-                be unavailable, but you can still view and manage locally stored patient
-                data. Please check your connection.
+                It looks like you've lost your internet connection. The page you are
+                trying to access is not available offline. Please check your
+                connection and try again.
             </AlertDescription>
         </Alert>
       </div>
