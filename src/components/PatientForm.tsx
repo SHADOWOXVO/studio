@@ -29,8 +29,9 @@ import { useToast } from '@/hooks/use-toast';
 const patientFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   age: z.coerce.number().int().positive({ message: 'Age must be a positive number.' }),
-  contact: z.string().min(5, { message: 'Contact information is required.' }),
+  problem: z.string().min(5, { message: 'Problem description is required.' }),
   dentalHistory: z.string().min(10, { message: 'Dental history must be at least 10 characters.' }),
+  possibleSolutions: z.string().min(10, { message: 'Possible solutions must be at least 10 characters.' }),
   totalTreatmentCost: z.coerce.number().positive({ message: 'Cost must be a positive number.' }),
 });
 
@@ -52,8 +53,9 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
       : {
           name: '',
           age: 0,
-          contact: '',
+          problem: '',
           dentalHistory: '',
+          possibleSolutions: '',
           totalTreatmentCost: 0,
         },
   });
@@ -110,12 +112,12 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
             />
             <FormField
               control={form.control}
-              name="contact"
+              name="problem"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact Info</FormLabel>
+                  <FormLabel>The Problem</FormLabel>
                   <FormControl>
-                    <Input placeholder="email@example.com or phone number" {...field} />
+                    <Input placeholder="e.g. Sharp pain in upper molar" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,6 +131,19 @@ export function PatientForm({ patient, open, onOpenChange, onSave }: PatientForm
                   <FormLabel>Dental History</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Previous fillings, crowns, allergies..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="possibleSolutions"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Possible Solutions</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Root canal treatment, filling replacement..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

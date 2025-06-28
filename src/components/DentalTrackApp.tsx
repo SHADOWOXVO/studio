@@ -13,8 +13,9 @@ const initialPatients: Patient[] = [
       id: '1',
       name: 'John Smith',
       age: 45,
-      contact: 'john.smith@email.com',
+      problem: 'Sensitivity in the upper right quadrant.',
       dentalHistory: 'Routine check-ups, one filling in 2021. No allergies.',
+      possibleSolutions: 'X-ray results confirm a small cavity on tooth #3. Scheduled a filling for the next appointment.',
       totalTreatmentCost: 1200,
       payments: [{ id: 'p1', amount: 500, date: new Date(Date.now() - 20 * 86400000).toISOString() }],
       notes: [
@@ -36,8 +37,9 @@ const initialPatients: Patient[] = [
         id: '2',
         name: 'Jane Doe',
         age: 32,
-        contact: 'jane.d@email.com',
+        problem: 'Routine checkup.',
         dentalHistory: 'Braces in teenage years. Regular cleanings.',
+        possibleSolutions: 'Routine cleaning and check-up. No issues found. Recommend to continue current routine.',
         totalTreatmentCost: 350,
         payments: [{ id: 'p2', amount: 350, date: new Date(Date.now() - 5 * 86400000).toISOString() }],
         notes: [
