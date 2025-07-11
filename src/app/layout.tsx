@@ -1,11 +1,33 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 import ServiceWorkerUnregister from '@/components/ServiceWorkerUnregister';
 
+const APP_NAME = "DentalTrack";
+const APP_DEFAULT_TITLE = "DentalTrack";
+const APP_TITLE_TEMPLATE = "%s - DentalTrack";
+const APP_DESCRIPTION = "Manage your patient data with ease.";
+
 export const metadata: Metadata = {
-  title: 'DentalTrack',
-  description: 'Manage your patient data with ease.',
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  manifest: "/manifest.json",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
