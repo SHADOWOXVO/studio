@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import type { Patient } from '@/types';
 import { Header } from '@/components/layout/Header';
@@ -8,6 +8,7 @@ import { PatientList } from '@/components/PatientList';
 import { PatientProfile } from '@/components/PatientProfile';
 import { PatientForm } from '@/components/PatientForm';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
 
 const initialPatients: Patient[] = [
     {
@@ -63,13 +64,24 @@ export default function DentalTrackApp() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsClient(true);
     if (patients.length > 0 && !selectedPatientId) {
       setSelectedPatientId(patients[0].id);
     }
-  }, [patients, selectedPatientId]);
+  }, []); // Run only once on mount
+
+  // Update selectedPatientId only when patients list changes
+  useEffect(() => {
+    if (isClient) {
+      if (!selectedPatientId || !patients.some(p => p.id === selectedPatientId)) {
+        setSelectedPatientId(patients.length > 0 ? patients[0].id : null);
+      }
+    }
+  }, [patients, isClient]);
 
   const selectedPatient = patients.find((p) => p.id === selectedPatientId) ?? null;
 
@@ -109,10 +121,81 @@ export default function DentalTrackApp() {
     handleSavePatient(updatedPatientData);
   }
 
+  const handleExportData = () => {
+    try {
+      const dataStr = JSON.stringify(patients, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+      
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', 'dental-track-backup.json');
+      document.body.appendChild(linkElement);
+      linkElement.click();
+      document.body.removeChild(linkElement);
+
+      toast({
+        title: "Data Exported",
+        description: "Your patient data has been downloaded.",
+      })
+    } catch (error) {
+      console.error("Failed to export data", error);
+      toast({
+        title: "Export Failed",
+        description: "Could not export your data. See console for details.",
+        variant: "destructive"
+      })
+    }
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result;
+        if (typeof text !== 'string') {
+          throw new Error("File could not be read");
+        }
+        const importedPatients = JSON.parse(text);
+
+        // Basic validation
+        if (Array.isArray(importedPatients) && (importedPatients.length === 0 || importedPatients[0].id)) {
+          setPatients(importedPatients);
+          setSelectedPatientId(importedPatients[0]?.id || null);
+          toast({
+            title: "Data Imported",
+            description: "Your patient data has been successfully restored.",
+          });
+        } else {
+          throw new Error("Invalid backup file format.");
+        }
+      } catch (error) {
+        console.error("Failed to import data", error);
+        toast({
+          title: "Import Failed",
+          description: "The selected file is not a valid backup file.",
+          variant: "destructive",
+        });
+      } finally {
+        // Reset file input to allow re-uploading the same file
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      }
+    };
+    reader.readAsText(file);
+  };
+
   if (!isClient) {
     return (
       <div className="flex flex-col h-screen">
-        <Header />
+        <Header onExport={handleExportData} onImport={handleImportClick} />
         <main className="flex-1 flex flex-col md:flex-row gap-6 p-6 overflow-hidden">
           <div className="w-full md:max-w-xs flex-shrink-0 space-y-4">
              <Skeleton className="h-10 w-full" />
@@ -130,7 +213,14 @@ export default function DentalTrackApp() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <Header onExport={handleExportData} onImport={handleImportClick} />
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleImportData}
+        accept="application/json"
+        className="hidden"
+      />
       <main className="flex-1 flex flex-col md:flex-row gap-6 p-6 overflow-y-auto md:overflow-y-hidden">
         <PatientList
           patients={patients}
